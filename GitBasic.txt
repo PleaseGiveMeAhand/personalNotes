@@ -1,0 +1,39 @@
+配置签名
+git config user.name [name]            当前仓库   保存位置 ./.git/config
+git config -global user.email [email]  系统全局            ~/.gitconfig
+
+基本操作
+git init                       初始化
+git add [file]                 工作区/暂存区
+git status                     查看状态
+git commit -m "message" [file] 暂存区/本地库
+git diff                       比较文件的不同，即暂存区和工作区的差异
+git help
+
+日志
+git log                    查看历史提交记录
+git log --pretty=oneline   单行显示
+git log --oneline          单行显示
+git reflog
+
+回退版本                 
+git reset --hard []
+git reset --hard HEAD^^^
+git reset --hard HEAD~3
+
+分支管理
+git branch -v            查看分支
+git branch [name]        创建分支
+git checkout [name]      切换分支
+git merge [name]         合并分支
+
+远程仓库
+git remote -v              查看别名
+git remote add [name] url  添加别名
+git push [name] master     本地上传
+git clone url              克隆下载
+git pull = fetch + merge   拉取文件
+
+SSH Key绑定
+rm -r .ssh/                   删除已存在
+ssh-keygen -t rsa -C [email]  创建ssh签名
