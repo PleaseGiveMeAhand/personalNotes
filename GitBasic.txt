@@ -17,7 +17,7 @@ git log --oneline          单行显示
 git reflog
 
 回退版本                 
-git reset --hard []
+git reset --hard [id]
 git reset --hard HEAD^^^
 git reset --hard HEAD~3
 
