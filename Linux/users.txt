@@ -1,0 +1,20 @@
+useradd [name]                 添加用户
+useradd -d [/home/name][name]  指定目录添加用户
+useradd -g [groupname][name]   指定组添加用户
+passwd [name]                  添加/修改密码
+userdel [name]                 删除用户，保留用户目录
+userdel -r [name]              删除用户，删除用户目录
+id [name]                      查看用户信
+su - [name]                    切换用户
+exit                           返回登陆用户
+groupadd [name]                添加组
+groupdel [name]                删除组
+usermod -g [groupname][name]   修改用户的组
+
+
+/etc/passwd：用户配置文件 
+             用户名:口令:用户id:组id:注释:目录:Shell
+/etc/shadow：口令(密码)的配置文件
+             用户名:口令:last修改时间:min间隔:max间隔:警告:不活动时间:失效时间:标志
+/etc/group： 组的配置文件
+             组名:口令:组id:组内用户列表
