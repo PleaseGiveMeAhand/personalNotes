@@ -1,0 +1,24 @@
+gzip [file]          压缩文件(.gz)
+gunzip [file]        解压文件
+
+当使用gzip 对文件进行压缩后，不会保留原来的文件。
+
+zip [name][file]     压缩文件(.zip)
+   -r                递归压缩，压缩目录
+
+unzip [name]         解压文件
+   -d [url]          指定解压文件存放目录
+
+tar [name][file]     打包文件(.tar.gz)
+   -c                产生tar打包文件
+   -v                显示详细信息
+   -f                指定压缩后的文件名
+   -g                打包同时压缩
+   -x                解压.tar文件
+test:
+    压缩test.txt
+	tar -zcvf test.tar.gz test.txt
+    解压test.tar.gz
+	tar -zxvf test.tar.gz
+	将test.tar.gz解压到/opt/
+	tar -zxvf test.tar.gz -C /opt/
