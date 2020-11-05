@@ -1,0 +1,142 @@
+find 命令
+    find 命令用来在指定目录下查找文件。任何位于参数之前的字符串都将被视为欲查找的目录名。
+如果使用该命令时，不设置任何参数，则 find 命令将在当前目录下查找子目录与文件。
+并且将查找到的子目录和文件全部进行显示。
+
+语法：
+    find path -option[-print][-exec -ok command]
+
+    find 根据下列规则判断path和expression，
+在命令列上第一个-(),!之前的部份为 path，之后的是 expression。
+如果 path 是空字串则使用目前路径，
+如果 expression 是空字串则使用 -print 为预设 expression。
+expression 中可使用的选项有二三十个之多。
+
+参数：
+    -mount, -xdev: 只检查和指定目录在同一个文件系统下的文件，避免列出其它文件系统中的文件
+    -amin n: 在过去 n 分钟内被读取过
+    -anewer file: 比文件 file 更晚被读取过的文件
+    -atime n: 在过去n天内被读取过的文件
+    -cmin n: 在过去 n 分钟内被修改过
+    -cnewer file:比文件 file 更新的文件
+    -ctime n: 在过去n天内被修改过的文件
+    -empty: 空的文件-gid n or -group name : gid 是 n 或是 group 名称是 name
+    -ipath p, -path p: 路径名称符合 p 的文件，ipath 会忽略大小写
+    -name name, -iname name: 文件名称符合 name 的文件。iname 会忽略大小写
+    -size n: 文件大小是n单位，b代表512位元组的区块，c表示字元数，k表示kilo bytes，w是二个位元组。
+    -type c: 文件类型是 c 的文件。
+          d: 目录
+          c: 字型装置文件
+          b: 区块装置文件
+          p: 具名贮列
+          f: 一般文件
+          l: 符号连结
+          s: socket
+    -pid n : process id 是 n 的文件
+    可以使用( )将运算式分隔，并使用下列运算。
+          exp1 -and exp2
+          !expr
+          -not expr
+          exp1 -or exp2
+          exp1, exp2
+
+test:
+    1、将目前目录及其子目录下所有延伸档名是c的文件列出来。
+       find . -name "*.c"
+    2、将目前目录其其下子目录中所有一般文件列出
+       find . -type f
+    3、将目前目录及其子目录下所有最近 20 天内更新过的文件列出
+       find . -ctime -20
+    4、查找/var/log目录中更改时间在7日以前的普通文件，并在删除之前询问它们：
+       find /var/log -type f -mtime +7 -ok rm {} \;
+    5、查找前目录中文件属主具有读、写权限，并且文件所属组的用户和其他用户具有读权限的文件：
+       find . -type f -perm 644 -exec ls -l {} \;
+    6、为了查找系统中所有文件长度为0的普通文件，并列出它们的完整路径：
+       find / -type f -size 0 -exec ls -l {} \;
+
+locate 命令
+    locate命令用于查找符合条件的文档，他会去保存文档和目录名称的数据库内，
+查找合乎范本样式条件的文档或目录。
+    locate与find不同:find是去硬盘找，locate只在 /var/lib/slocate 资料库中找。
+locate的速度比find快，它并不是真的查找，而是查数据库。
+    一般文件数据库在 /var/lib/slocate/slocate.db 中，
+所以locate的查找并不是实时的，而是以数据库的更新为准，
+一般是系统自己维护，也可以手工升级数据库 ，命令为：
+    updatedb
+    默认情况下 updatedb 每天执行一次。
+	由于locate指令基于数据库进行查询，所以第一次运行前，必须使用updtedb指令创建locate数据库。
+
+语法：
+    locate [-d ][--help][--version][范本样式...]
+
+参数：
+    -b, --basename -- 仅匹配路径名的基本名称
+    -c, --count -- 只输出找到的数量
+    -d, --database DBPATH -- 使用DBPATH指定的数据库，而不是默认数据库 /var/lib/mlocate/mlocate.db
+    -e, --existing -- 仅打印当前现有文件的条目
+    -1 -- 如果是 安全模式。在安全模式下，使用者不会看到权限无法看到的档案。
+          这会始速度减慢，因为 locate 必须至实际的档案系统中取得档案的权限资料。
+    -0, --null -- 在输出上带有NUL的单独条目
+    -S, --statistics -- 不搜索条目，打印有关每个数据库的统计信息
+    -q -- 安静模式，不会显示任何错误讯息。
+    -P, --nofollow, -H -- 检查文件存在时不要遵循尾随的符号链接
+    -l, --limit, -n LIMIT -- 将输出（或计数）限制为LIMIT个条目
+    -n -- 至多显示 n个输出。     
+	-m, --mmap -- 被忽略，为了向后兼容
+    -r, --regexp REGEXP -- 使用基本正则表达式 --regex -- 使用扩展正则表达式
+    -q, --quiet -- 安静模式，不会显示任何错误讯息
+    -s, --stdio -- 被忽略，为了向后兼容
+    -o -- 指定资料库存的名称。
+    -h, --help -- 显示帮助
+    -i, --ignore-case -- 忽略大小写
+    -V, --version -- 显示版本信息
+
+test:
+    查找 passwd 文件
+	locate passwd
+	搜索 etc 目录下所有以 sh 开头的文件
+	locate /etc/sh
+	忽略大小写搜索当前用户目录下所有以 r 开头的文件 
+	locate -i ~/r
+
+grep 命令
+    grep 命令用于查找文件里符合条件的字符串。
+	grep 和管道符合|
+	grep过滤查找，管道符|，将前一个命令的处理结果传递给后一个命令处理。
+	cat [file] | grep -ni[name] 在[file]内查找[name],n=显示行，i=不区分大小写
+	
+语法：
+    grep [-abcEFGhHilLnqrsvVwxy]
+
+参数：
+    -a 或 --text: 不要忽略二进制的数据。
+    -A<行数> 或 --after-context=<行数>: 除了显示符合范本样式的那一列之外，并显示该行之后的内容。
+    -b 或 --byte-offset : 在显示符合样式的那一行之前，标示出该行第一个字符的编号。
+    -B<显示行数> 或 --before-context=<显示行数> : 除了显示符合样式的那一行之外，并显示该行之前的内容。
+    -c 或 --count : 计算符合样式的列数。
+    -C<显示行数> 或 --context=<显示行数>或-<显示行数> : 除了显示符合样式的那一行之外，并显示该行之前后的内容。
+    -d <动作> 或 --directories=<动作> : 当指定要查找的是目录而非文件时，必须使用这项参数，否则grep指令将回报信息并停止动作。
+    -e<范本样式> 或 --regexp=<范本样式> : 指定字符串做为查找文件内容的样式。
+    -E 或 --extended-regexp : 将样式为延伸的正则表达式来使用。
+    -f<规则文件> 或 --file=<规则文件> : 指定规则文件，其内容含有一个或多个规则样式，让grep查找符合规则条件的文件内容，格式为每行一个规则样式。
+    -F 或 --fixed-regexp : 将样式视为固定字符串的列表。
+    -G 或 --basic-regexp : 将样式视为普通的表示法来使用。
+    -h 或 --no-filename : 在显示符合样式的那一行之前，不标示该行所属的文件名称。
+    -H 或 --with-filename : 在显示符合样式的那一行之前，表示该行所属的文件名称。
+    -i 或 --ignore-case : 忽略字符大小写的差别。
+    -l 或 --file-with-matches : 列出文件内容符合指定的样式的文件名称。
+    -L 或 --files-without-match : 列出文件内容不符合指定的样式的文件名称。
+    -n 或 --line-number : 在显示符合样式的那一行之前，标示出该行的列数编号。
+    -o 或 --only-matching : 只显示匹配PATTERN 部分。
+    -q 或 --quiet或--silent : 不显示任何信息。
+    -r 或 --recursive : 此参数的效果和指定"-d recurse"参数相同。
+    -s 或 --no-messages : 不显示错误信息。
+    -v 或 --invert-match : 显示不包含匹配文本的所有行。
+    -V 或 --version : 显示版本信息。
+    -w 或 --word-regexp : 只显示全字符合的列。
+    -x --line-regexp : 只显示全列符合的列。
+    -y : 此参数的效果和指定"-i"参数相同。	
+
+test:
+    在当前目录中，查找后缀有 file 字样的文件中包含 test 字符串的文件
+	grep test *file 	
